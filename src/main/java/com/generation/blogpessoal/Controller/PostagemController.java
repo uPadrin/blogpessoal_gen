@@ -74,6 +74,6 @@ public class PostagemController {
 
         postagemRepository.deleteById(id); // SELECT * FROM tb_postagens WHERE id = ?;
     }
-
+ //teste
 }
 
