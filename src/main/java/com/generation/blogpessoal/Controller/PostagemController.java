@@ -43,7 +43,7 @@ public class PostagemController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build()); // SELECT * FROM tb_postagens WHERE id = "id"
     }
 
-    @GetMapping("/titulo/{titulo}")
+    @GetMapping("/titulo/{titulo}") //Metodo getByTitulo
     public ResponseEntity<List<Postagem>> getByTitulo(@PathVariable String titulo) {
         return ResponseEntity.ok(postagemRepository.findAllByTituloContainingIgnoreCase(titulo));
     }
