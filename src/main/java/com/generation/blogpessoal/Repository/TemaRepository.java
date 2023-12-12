@@ -1,7 +1,12 @@
 package com.generation.blogpessoal.Repository;
 
-import com.generation.blogpessoal.model.Postagem;
+import com.generation.blogpessoal.model.Tema;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
-public interface TemaRepository extends JpaRepository<Postagem, Long> {
+import java.util.List;
+
+public interface TemaRepository extends JpaRepository<Tema, Long> {
+
+    public List<Tema> findAllByDescricaoContainingIgnoreCase(@Param("descricao") String descricao);
 }

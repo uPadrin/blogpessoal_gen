@@ -1,19 +1,22 @@
 package com.generation.blogpessoal.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-
-import javax.annotation.processing.Generated;
 
 @Entity
 @Table(name = "tb_temas")
 public class Tema {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "")
-    private String desc;
+    private String descricao;
 
     public Long getId() {
         return id;
@@ -23,12 +26,12 @@ public class Tema {
         this.id = id;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
 }
