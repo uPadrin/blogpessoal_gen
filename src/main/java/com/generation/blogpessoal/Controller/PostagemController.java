@@ -1,6 +1,7 @@
 package com.generation.blogpessoal.Controller;
 
 import com.generation.blogpessoal.Repository.PostagemRepository;
+import com.generation.blogpessoal.Repository.TemaRepository;
 import com.generation.blogpessoal.model.Postagem;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class PostagemController {
 
     @Autowired // Injeção de dependência.
     private PostagemRepository postagemRepository;
+
+    @Autowired
+    private TemaRepository temaRepository;
 
     @GetMapping // Metodo getAll
     public ResponseEntity<List<Postagem>> getAll() {
@@ -47,20 +51,30 @@ public class PostagemController {
         return ResponseEntity.ok(postagemRepository.findAllByTituloContainingIgnoreCase(titulo));
     }
 
-    @PostMapping
     public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem)); // INSERT INTO
+
+        if (temaRepository.existsById(postagem.getTema().getId()))
+            return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem)); // INSERT INTO
         // tb_postagens
-        // (titulo, texto)
-        // VALUE (?, ?);
+        // (titulo,
+        // texto) VALUE
+        // (?, ?);
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema inexistente!", null);
     }
 
     @PutMapping
     public ResponseEntity<Postagem> update(@Valid @RequestBody Postagem postagem) {
-        return postagemRepository.findById(postagem.getId())
-                .map(resposta -> ResponseEntity.ok(postagemRepository.save(postagem)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build()); // UPDATE tb_postagens SET titulo = ?,
-        // texto = ? WHERE id = ?;
+
+        if (postagemRepository.existsById(postagem.getId())) {
+            if (temaRepository.existsById(postagem.getTema().getId())) {
+                return ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem));
+            }
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema inexistente!", null);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/{id}")
@@ -71,8 +85,7 @@ public class PostagemController {
         if (postagem.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        postagemRepository.deleteById(id); // SELECT * FROM tb_postagens WHERE id = ?;
+        postagemRepository.deleteById(id); // DELETE FROM tb_postagens WHERE id = ?;
     }
- //teste
 }
 
