@@ -1,7 +1,7 @@
-package com.generation.blogpessoal.Controller;
+package com.generation.blogpessoal.controller;
 
-import com.generation.blogpessoal.Repository.PostagemRepository;
-import com.generation.blogpessoal.Repository.TemaRepository;
+import com.generation.blogpessoal.repository.PostagemRepository;
+import com.generation.blogpessoal.repository.TemaRepository;
 import com.generation.blogpessoal.model.Postagem;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +51,7 @@ public class PostagemController {
         return ResponseEntity.ok(postagemRepository.findAllByTituloContainingIgnoreCase(titulo));
     }
 
+    @PostMapping
     public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem) {
 
         if (temaRepository.existsById(postagem.getTema().getId()))

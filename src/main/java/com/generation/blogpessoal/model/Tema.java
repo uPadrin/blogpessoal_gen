@@ -2,7 +2,6 @@ package com.generation.blogpessoal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
@@ -17,6 +16,7 @@ public class Tema {
 
     @NotNull(message = "O Atributo Descrição é obrigatorio")
     private String descricao;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tema" , cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("tema")
     private List<Postagem> postagem;

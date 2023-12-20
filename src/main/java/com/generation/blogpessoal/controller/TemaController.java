@@ -1,6 +1,6 @@
-package com.generation.blogpessoal.Controller;
+package com.generation.blogpessoal.controller;
 
-import com.generation.blogpessoal.Repository.TemaRepository;
+import com.generation.blogpessoal.repository.TemaRepository;
 import com.generation.blogpessoal.model.Tema;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
