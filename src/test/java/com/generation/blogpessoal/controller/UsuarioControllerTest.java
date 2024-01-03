@@ -117,20 +117,22 @@ public class UsuarioControllerTest {
         HttpEntity<UsuarioLogin> corpoRequisicao = new HttpEntity<>(usuarioLogin);
 
         // Requisição HTTP
-        ResponseEntity<String> resposta = testRestTemplate
-                .exchange("/usuarios/logar", HttpMethod.POST, null, String.class);
+        ResponseEntity<UsuarioLogin> corpoResposta = testRestTemplate
+                .exchange("/usuarios/logar", HttpMethod.POST, corpoRequisicao, UsuarioLogin.class);
 
-        assertEquals(HttpStatus.OK, resposta.getStatusCode());
+        assertEquals(HttpStatus.OK, corpoResposta.getStatusCode());
     }
 
     @Test
     @DisplayName("Deve Buscar Usuário Por ID")
     public void deveBuscarUsuarioId() {
 
-        usuarioService.cadastrarUsuario(new Usuario(0L, "Gabriel Sponda", "sponda@email.com.br", "12345678", ""));
+        Optional<Usuario> usuarioCadastrado = usuarioService.cadastrarUsuario(new Usuario(0L,
+                "Fernando", "Fernando@email.com.br", "12345678", " "));
 
         // Requisição HTTP
-        ResponseEntity<String> corpoResposta = testRestTemplate.withBasicAuth("root@root.com", "rootroot").exchange("/usuarios/1", HttpMethod.GET, null, String.class);
+        ResponseEntity<String> corpoResposta = testRestTemplate.withBasicAuth("root@root.com", "rootroot")
+                .exchange("/usuarios/" + usuarioCadastrado.get().getId(), HttpMethod.GET, null, String.class);
 
         assertEquals(HttpStatus.OK, corpoResposta.getStatusCode());
     }
